@@ -70,9 +70,13 @@ contract PopsicleFinance is ERC20 {
     function collectFees() public {
         require(totalFeesEarnedPerShare >= accounts[msg.sender].feesCollectedPerShare);
         // the amount of fees (rewards) per share that have yet to be collected.
-        uint fee_per_share = totalFeesEarnedPerShare - accounts[msg.sender].feesCollectedPerShare;
         // the already counted rewards + the rewards that haven't been 
-        uint to_pay = fee_per_share * balances[msg.sender] + accounts[msg.sender].Rewards;
+        // @Notice: Here there was -
+        // uint fee_per_share = totalFeesEarnedPerShare - accounts[msg.sender].feesCollectedPerShare;
+        // uint to_pay = fee_per_share * balances[msg.sender] + accounts[msg.sender].Rewards;
+        // which can be equivalently changed to -
+        uint to_pay = assetsOf(msg.sender);
+
         // updating the indicator of collected fees
         accounts[msg.sender].feesCollectedPerShare = totalFeesEarnedPerShare;
         // nullifying user's deserved rewards
@@ -92,5 +96,13 @@ contract PopsicleFinance is ERC20 {
         uint to_pay = fee_per_share * balances[user] + accounts[user].Rewards;
         return to_pay;
        // return accounts[user].Rewards + balances[user] * (totalFeesEarnedPerShare - accounts[user].feesCollectedPerShare);
+    }
+
+        function feesCollectedPerShareOf(address user) public view returns(uint){
+            return accounts[user].feesCollectedPerShare;
+    }
+
+        function RewardsOf(address user) public view returns(uint){
+             return accounts[user].Rewards;
     }
 }

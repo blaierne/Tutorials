@@ -8,6 +8,7 @@
    A. totalRewardsOwedToUsers := sum of assetsOf(user) for all users. 
    B. totalDepositedOwed := sum of balances(user) for all users. 
    C. Need: totalRewardsOwedToUsers + totalDepositedOwed <= ETH in the contract. 
+   D. For every user feesCollectedPerShare must be <= totalFeesEarnedPerShare. 
 6. Rewards are only earned by depositing or withdrawing
 
 1. A PopsicleFinance Liquidity Pool (PFLP) can be either
