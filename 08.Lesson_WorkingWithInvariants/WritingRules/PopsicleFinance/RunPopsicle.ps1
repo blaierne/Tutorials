@@ -1,0 +1,1 @@
+certoraRun 08.Lesson_WorkingWithInvariants/WritingRules/PopsicleFinance/popsicle.sol:PopsicleFinance --verify PopsicleFinance:08.Lesson_WorkingWithInvariants/WritingRules/PopsicleFinance/popsicle_properties_spec.spec --solc solc8.13  --short_output

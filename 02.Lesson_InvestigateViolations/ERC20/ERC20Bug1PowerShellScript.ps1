@@ -1,0 +1,2 @@
+certoraRun 02.Lesson_InvestigateViolations/ERC20/ERC20Bug1.sol:ERC20 --verify ERC20:02.Lesson_InvestigateViolations/ERC20/ERC20.spec --solc solc8.2
+# Three methods fail: burn(address,uint256),transfer(address,uint256),transferFrom(address,address,uint256)

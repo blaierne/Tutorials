@@ -1,0 +1,2 @@
+certoraRun 02.Lesson_InvestigateViolations/ERC20/ERC20Bug1.sol:ERC20 --verify ERC20:02.Lesson_InvestigateViolations/ERC20/ERC20.spec --solc solc8.2 --rule  integrityOfIncreaseAllowance --optimistic_loop
+# In increaseAllowance a plus sign was changed to a minus sign

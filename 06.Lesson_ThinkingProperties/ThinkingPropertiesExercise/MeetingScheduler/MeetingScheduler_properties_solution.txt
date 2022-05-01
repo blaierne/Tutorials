@@ -1,0 +1,75 @@
+Valid State
+
+A Meeting has fields
+        uint256 startTime;
+        uint256 endTime;
+        uint256 numOfParticipents;
+        address organizer;
+        MeetingStatus status;
+		
+where MeetingStatus is enum 
+       {UNINITIALIZED,
+        PENDING,
+        STARTED,
+        ENDED,
+        CANCELLED}
+
+1. There are no restrictions in the specifications on UNINITIALIZED meetings.
+
+2. If a meeting is PENDING then:
+startTime <= endTime and both are non-zero
+numOfParticipents=0
+organizer != 0x0
+
+3. If a meeting is STARTED then:
+startTime <= endTime and both are non-zero
+numOfParticipents>=0
+organizer != 0x0
+
+4. If a meeting is CANCELLED then:
+startTime <= endTime and both are non-zero
+numOfParticipents>=0
+organizer != 0x0
+
+4. If a meeting is ENDED then:
+startTime <= endTime and both are non-zero
+numOfParticipents>=0
+organizer != 0x0
+
+State Transition
+
+1. To make a PENDING meeting, the time stamp (start/end) must be set in the future, and the number
+of participants must be zero, and the organizer must be the message sender.
+2. Anybody can change a meeting from PENDING to STARTED.
+3. The owner (and only the owner) of a PENDING meeting can change its status to CANCELLED.
+4. The only valid way to reach the ENDED state, is if the meeting is both STARTED
+and the current time >= end_time. If these two conditions are met, any participant can end the meeting.
+5.  A meeting that has already occurred can not be labeled CANCELLED.	
+6. Modularity:
+	A. The only way to end a meeting is endMeeting
+	B. The only way to cancel a meeting is cancelMeeting
+	C. The only way to start a meeting is startMeeting
+	D. The only way to schedule a meeting is scheduleMeeting
+	
+Variable Transition
+
+1. The total number of meetings (including ENDED, CANCELLED) always increases (i.e., history
+is never deleted).
+2. The only way to increase the number of participants is joinMeeting.
+3. Integrity of Time-Stamp 
+
+High-Level Property
+
+1. Meetings can not be rescheduled or their properties (owner, start/end time) tampered with.
+2. Every function call affects only one meeting 
+
+Unit Tests
+
+1. joinMeeting correctly increases the number of participants.
+
+2. endMeeting ends a meeting only if the meeting is STARTED
+and the current time >= end_time.
+
+...
+
+

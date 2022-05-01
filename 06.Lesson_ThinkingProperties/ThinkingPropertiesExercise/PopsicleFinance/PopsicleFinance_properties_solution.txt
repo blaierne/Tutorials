@@ -1,0 +1,79 @@
+Valid State
+
+
+
+1. A PopsicleFinance Liquidity Pool (PFLP) can be either
+{NOT CREATED, CREATED}
+
+2. A NOT CREATED LP-pool has:
+a. totalFeesEarnedPerShare=0.
+b. owner the zero address.
+c. all accounts are UNINITIALIZED.
+d. total=0.
+e. balances UNINITIALIZED.
+f. allowances UNINITIALIZED. 
+
+3. A CREATED LP-pool has:
+a. an owner address which is not the zero address.
+b. a non-empty name
+c. a non-empty symbol
+
+---
+
+1. A user account can be in either 
+{UNINITIALIZED,
+INITIALIZED}
+	
+2. An UNINITIALIZED account (i.e., deposit was never called for this address) must have:
+a. feesCollectedPerShare =0
+b. Rewards =0
+c. balances = 0
+d. allowance[user] = 0 for every user
+Remark: it seems we should allow *other users* (which are initialized) to give allowance
+to an address account which is not INITIALIZED
+
+State Transition
+
+1. The only way to CREATE an instance of an PFLP is via the constructor.
+2. CREATING an instance makes owner=msg.sender.
+3. It is not possible to pass from CREATED to NOT CREATED (i.e., there is no 
+destructor present in the specification)
+4. The only way to make an account address pass from UNINITIALIZED to INITIALIZED is by calling
+deposit.
+
+Variable Transition
+
+1. totalFeesEarnedPerShare is:
+A. never negative 
+B. can only increase.
+C. Only changed by calling OwnerDoItsJobAndEarnsFeesToItsClients. 
+
+High-Level Property
+
+1. Solvancy - at any point, the total supply of assetOf of all users should not exceed
+the ETH locked in the contract. 
+2. Accounting (events are recorded correctly)
+3. Profitable - for any user in the system, we must have that assetOf(user)
+is greater or equal to the total sum of deposit(user) - withdraw(user).
+
+Unit Tests
+
+1. Mint/Burn/Transfer integrity ... (standard ERC20 checks)
+2. Mint/Burn are opposites (standard ERC20 checks)
+
+3. Integity of deposit 
+A. Rewards for user are increased correctly
+B. feesCollectedPerShare are set to the current value.
+C. Tokens are minted in the correct amount for the user.
+D. The state of no other user is changed.
+
+4. Integity of withdraw 
+A. Rewards for user are decreased correctly.
+C. Tokens are burned in the correct amount for the user.
+C. The state of no other user is changed.
+
+4. Integity of collectFees 
+A. Rewards for user are set to zero.
+B. feesCollectedPerShare are set to the current value.
+C. user is paid the correct amount (e.g., call does not revert for some reason)
+D. The state of no other user is changed.

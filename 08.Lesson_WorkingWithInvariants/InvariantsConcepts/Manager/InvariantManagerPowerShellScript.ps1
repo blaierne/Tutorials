@@ -1,0 +1,1 @@
+certoraRun 08.Lesson_WorkingWithInvariants/InvariantsConcepts/Manager/ManagerBug3.sol:Manager --verify Manager:08.Lesson_WorkingWithInvariants/InvariantsConcepts/Manager/ManagerFullSolution.spec --solc solc8.2  --rule uniqueManager --short_output

@@ -1,0 +1,4 @@
+#certoraRun 02.Lesson_InvestigateViolations/ERC20/ERC20Bug1.sol:ERC20 --verify ERC20:02.Lesson_InvestigateViolations/ERC20/ERC20.spec --solc solc8.2 --rule  totalSupplyNotLessThanSingleUserBalance --optimistic_loop
+# This rule breaks even on the correct version of the ERC20 contract - since the rule is invalid and starts at an impossible state
+certoraRun 02.Lesson_InvestigateViolations/ERC20/ERC20Fixed.sol:ERC20 --verify ERC20:02.Lesson_InvestigateViolations/ERC20/ERC20.spec --solc solc8.2 --rule  totalSupplyNotLessThanSingleUserBalance --optimistic_loop
+# The rule fails because we call f(e,arg) with impossible arguments, i.e., the user we transferfrom has a balance higher then the total amount of tokens in the system!

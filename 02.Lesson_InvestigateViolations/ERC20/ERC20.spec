@@ -8,11 +8,14 @@
 // Checks that the sum of sender and recipient accounts remains the same after transfer(), i.e. assets doesn't disappear nor created out of thin air
 rule integrityOfTransfer(address recipient, uint256 amount) {
 	env e;
-	uint256 balanceSenderBefore = balanceOf(e, e.msg.sender);
+    address sender = e.msg.sender;
+	uint256 balanceSenderBefore = balanceOf(e, sender);
 	uint256 balanceRecipientBefore = balanceOf(e, recipient);
 	transfer(e, recipient, amount);
+    uint256 balanceSenderAfter = balanceOf(e, sender);
+    uint256 balanceRecipientAfter = balanceOf(e, recipient);
 
-	assert balanceRecipientBefore + balanceSenderBefore == balanceOf(e, e.msg.sender) + balanceOf(e, recipient), "the total funds before and after a transfer should remain the constant";
+	assert balanceRecipientBefore + balanceSenderBefore == balanceSenderAfter + balanceRecipientAfter, "the total funds before and after a transfer should remain the constant";
 }
 
 
@@ -44,8 +47,10 @@ rule integrityOfIncreaseAllowance(address spender, uint256 amount) {
 rule balanceChangesFromCertainFunctions(method f, address user){
     env e;
     calldataarg args;
+    address userAddressBefore = user;
     uint256 userBalanceBefore = balanceOf(e, user);
     f(e, args);
+    address userAddressAfter = user;
     uint256 userBalanceAfter = balanceOf(e, user);
 
     assert userBalanceBefore != userBalanceAfter => 

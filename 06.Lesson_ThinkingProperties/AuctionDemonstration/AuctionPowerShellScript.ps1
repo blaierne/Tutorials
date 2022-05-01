@@ -1,0 +1,1 @@
+ certoraRun 06.Lesson_ThinkingProperties/AuctionDemonstration/AuctionFixed.sol:ERC20 --verify ERC20:06.Lesson_ThinkingProperties/AuctionDemonstration/ERC20.spec --solc solc5.0  --optimistic_loop

@@ -1,0 +1,3 @@
+certoraRun 02.Lesson_InvestigateViolations/ERC20/ERC20Bug1.sol:ERC20 --verify ERC20:02.Lesson_InvestigateViolations/ERC20/ERC20.spec --solc solc8.2 --rule  balanceChangesFromCertainFunctions --optimistic_loop
+# failure in methods name() and symbol(). These are getter functions which involve strings, so the failure in parametric rules comes from the representation as loops... can mitigate by 
+# using the flag --optimistic_loop

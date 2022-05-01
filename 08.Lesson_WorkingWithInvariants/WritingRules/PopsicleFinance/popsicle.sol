@@ -38,6 +38,9 @@ contract PopsicleFinance is ERC20 {
         uint Rewards; // general "debt" of popsicle to the user 
     }
 
+    function getTotalFeesEarnedPerShare() public returns(uint){
+        return totalFeesEarnedPerShare;
+    }
     // deposit assets (ETH) to the system in exchange for shares
     function deposit() public payable {
         uint amount = msg.value;
@@ -85,6 +88,9 @@ contract PopsicleFinance is ERC20 {
 
     // added by certora for use in a spec - returns the deserved rewards collected up to this point.
     function assetsOf(address user) public view returns(uint) {
-        return accounts[user].Rewards + balances[user] * (totalFeesEarnedPerShare - accounts[user].feesCollectedPerShare);
+        uint fee_per_share = totalFeesEarnedPerShare - accounts[user].feesCollectedPerShare;
+        uint to_pay = fee_per_share * balances[user] + accounts[user].Rewards;
+        return to_pay;
+       // return accounts[user].Rewards + balances[user] * (totalFeesEarnedPerShare - accounts[user].feesCollectedPerShare);
     }
 }

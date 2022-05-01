@@ -33,10 +33,18 @@ rule correctPointsIncreaseToContenders(address first, address second, address th
     uint256 thirdPointsBefore = getPointsOfContender(e, third);
 
     vote(e, first, second, third);
+
+    uint256 firstPointsAfter = getPointsOfContender(e, first);
+    uint256 secondPointsAfter = getPointsOfContender(e, second);
+    uint256 thirdPointsAfter = getPointsOfContender(e, third);
+
+    uint256 firstDifferenceInPoints = firstPointsAfter - firstPointsBefore;
+    uint256 secondDifferenceInPoints = secondPointsAfter - secondPointsBefore;
+    uint256 thirdDifferenceInPoints = thirdPointsAfter - thirdPointsBefore;
     
-    assert (getPointsOfContender(e, first) - firstPointsBefore == 3, "first choice receieved other amount than 3 points");
-    assert (getPointsOfContender(e, second) - secondPointsBefore == 2, "second choice receieved other amount than 2 points");
-    assert (getPointsOfContender(e, third) - thirdPointsBefore == 1, "third choice receieved other amount than 1 points");
+    assert (firstDifferenceInPoints == 3, "first choice receieved other amount than 3 points");
+    assert (secondDifferenceInPoints == 2, "second choice receieved other amount than 2 points");
+    assert (thirdDifferenceInPoints == 1, "third choice receieved other amount than 1 points");
 
 }
 
@@ -45,6 +53,7 @@ rule onceBlackListedNotOut(method f, address voter){
     env e; calldataarg args;
     uint256 age; bool registeredBefore; bool voted; uint256 vote_attempts; bool black_listed_Before;
     age, registeredBefore, voted, vote_attempts, black_listed_Before = getFullVoterDetails(e, voter);
+    
     f(e, args);
     bool registeredAfter; bool black_listed_After;
     age, registeredAfter, voted, vote_attempts, black_listed_After = getFullVoterDetails(e, voter);
@@ -57,7 +66,7 @@ rule contendersPointsNondecreasing(method f, address contender){
     env e; calldataarg args;
     uint8 age; bool registeredBefore; uint256 pointsBefore;
     age, registeredBefore, pointsBefore = getFullContenderDetails(e, contender);
-    require pointsBefore > 0 => registeredBefore; // why is this needed? try to omit this line and see what happens
+    // require pointsBefore > 0 => registeredBefore; // why is this needed? try to omit this line and see what happens
     f(e,args);
     bool registeredAfter; uint256 pointsAfter;
     age, registeredAfter, pointsAfter = getFullContenderDetails(e, contender);

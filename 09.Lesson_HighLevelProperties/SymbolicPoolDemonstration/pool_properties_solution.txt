@@ -1,0 +1,21 @@
+Properties For SymbolicPool
+------------------------------
+Valid State
+
+
+State Transition
+
+Variable Transition
+_status, asset, feeRate, _totalSupply, balance, _allowance
+
+High-Level Property
+
+1. Solvency - _totalSupply is >= the sum of all LP-token balances.
+
+Unit Tests
+
+Priority
+------------------------------
+
+
+
